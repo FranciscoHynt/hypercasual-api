@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class HighScore {
 
-    private String score;
+    private int score;
+    private int time;
     private String player;
     private String country;
 }
