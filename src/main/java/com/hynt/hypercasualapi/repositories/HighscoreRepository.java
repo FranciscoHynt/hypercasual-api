@@ -9,4 +9,6 @@ public interface HighscoreRepository extends MongoRepository<HighScore, String> 
 
     ArrayList<HighScore> findAllByGame_Name(String gameName);
 
+    HighScore save(HighScore highScore);
+
 }

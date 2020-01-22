@@ -1,10 +1,10 @@
 package com.hynt.hypercasualapi.controllers;
 
+import com.hynt.hypercasualapi.dto.HighScoreDTO;
 import com.hynt.hypercasualapi.dto.HighScoreListDTO;
 import com.hynt.hypercasualapi.services.ScoreService;
-import com.hynt.hypercasualapi.collections.HighScore;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +30,7 @@ public class ScoreController {
 
     @RequestMapping(value = "insertScore", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity insertScore(@RequestParam String gameName,
-                                      @RequestBody HighScore scoreToInsert){
+                                      @RequestBody HighScoreDTO scoreToInsert){
 
         return scoreService.insertNewScore(gameName, scoreToInsert);
     }
