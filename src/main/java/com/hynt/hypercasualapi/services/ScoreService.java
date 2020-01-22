@@ -19,8 +19,12 @@ import static com.hynt.hypercasualapi.utils.GameConstants.SIMPLE_SCORE_MODEL;
 @Service
 public class ScoreService {
 
-    @Autowired
+    final
     GameRepository gameRepository;
+
+    public ScoreService(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
+    }
 
     public ResponseEntity selectTopScores(String gameName, Integer recordsAmount, String countryName) {
 

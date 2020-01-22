@@ -18,8 +18,11 @@ import java.util.List;
 @Controller
 public class ScoreController {
 
-    @Autowired
-    private ScoreService scoreService;
+    private final ScoreService scoreService;
+
+    public ScoreController(ScoreService scoreService) {
+        this.scoreService = scoreService;
+    }
 
     @RequestMapping(value = "topScores", method = RequestMethod.GET)
     public ResponseEntity topScores(@RequestParam String gameName,
