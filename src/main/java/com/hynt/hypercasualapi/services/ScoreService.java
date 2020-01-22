@@ -6,10 +6,13 @@ import com.hynt.hypercasualapi.dto.HighScoreDTO;
 import com.hynt.hypercasualapi.dto.HighScoreListDTO;
 import com.hynt.hypercasualapi.repositories.GameRepository;
 import com.hynt.hypercasualapi.repositories.HighscoreRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -29,7 +32,7 @@ public class ScoreService {
 
     public ResponseEntity selectTopScores(String gameName, Integer recordsAmount, String countryName) {
 
-        ArrayList<HighScore> highScores = highscoreRepository.findAllByGame_Name(gameName);
+        ArrayList<HighScore> highScores = highscoreRepository.findAllByGame_Name(gameName, PageRequest.of(0, recordsAmount));
 
         return new ResponseEntity(new HighScoreListDTO(highScores), HttpStatus.OK);
     }
@@ -59,21 +62,37 @@ public class ScoreService {
 //        return new ResponseEntity(HttpStatus.OK);
 //    }
 
+
     public ResponseEntity insertNewScore(String gameName, HighScoreDTO scoreToInsert){
+
+        boolean hasSpaceInRecords = Boolean.FALSE;
+        boolean greaterThanSomeScore = Boolean.FALSE;
 
         Game game = gameRepository.findGameByName(gameName);
 
-        HighScore highScore = new HighScore();
+        ArrayList<HighScore> highScores = getHighScoreList(gameName, game.getMaxScoresRecords());
 
-        highScore.setGame(game);
-        highScore.setScore(scoreToInsert.getScore());
-        highScore.setPlayer(scoreToInsert.getPlayer());
-        highScore.setTime(scoreToInsert.getTime());
-        highScore.setCountry(scoreToInsert.getCountry());
+        hasSpaceInRecords = (highScores.isEmpty() || highScores.size() < game.getMaxScoresRecords());
 
-        highscoreRepository.save(highScore);
+        if(!hasSpaceInRecords)
+            greaterThanSomeScore = highScores.stream().anyMatch(score -> score.getScore() < scoreToInsert.getScore());
 
-        return new ResponseEntity(HttpStatus.OK);
+        if(hasSpaceInRecords || greaterThanSomeScore) {
+
+            HighScore highScore = new HighScore();
+
+            highScore.setGame(game);
+            highScore.setScore(scoreToInsert.getScore());
+            highScore.setPlayer(scoreToInsert.getPlayer());
+            highScore.setTime(scoreToInsert.getTime());
+
+            highscoreRepository.save(highScore);
+
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity((HttpStatus.OK));
+
     }
 
     public ResponseEntity syncScores(String gameName, HighScoreListDTO highScoreList) {
@@ -81,8 +100,8 @@ public class ScoreService {
         return null;
     }
 
-    private ArrayList<HighScore> getHighScoreList(String gameName){
+    private ArrayList<HighScore> getHighScoreList(String gameName, int recordsAmount){
 
-        return Optional.ofNullable(highscoreRepository.findAllByGame_Name(gameName)).orElse(new ArrayList<>());
+        return Optional.ofNullable(highscoreRepository.findAllByGame_Name(gameName, PageRequest.of(0, recordsAmount))).orElse(new ArrayList<>());
     }
 }

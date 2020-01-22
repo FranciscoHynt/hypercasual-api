@@ -12,5 +12,4 @@ public class HighScore {
     private int score;
     private int time;
     private String player;
-    private String country;
 }

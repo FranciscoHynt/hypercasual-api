@@ -13,6 +13,7 @@ public class Game {
     @Id
     private String id;
     private int scoreModel;
+    private int maxScoresRecords;
     private String name;
     private String version;
 }
