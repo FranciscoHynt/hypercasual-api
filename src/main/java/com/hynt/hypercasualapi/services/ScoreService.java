@@ -1,20 +1,18 @@
 package com.hynt.hypercasualapi.services;
 
 import com.hynt.hypercasualapi.collections.Game;
-import com.hynt.hypercasualapi.types.HighScore;
+import com.hynt.hypercasualapi.collections.HighScore;
 import com.hynt.hypercasualapi.dto.HighScoreListDTO;
 import com.hynt.hypercasualapi.repositories.GameRepository;
+import com.hynt.hypercasualapi.repositories.HighscoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
-
-import static com.hynt.hypercasualapi.utils.GameConstants.SIMPLE_SCORE_MODEL;
 
 @Service
 public class ScoreService {
@@ -22,25 +20,28 @@ public class ScoreService {
     final
     GameRepository gameRepository;
 
-    public ScoreService(GameRepository gameRepository) {
+    final
+    HighscoreRepository highscoreRepository;
+
+    public ScoreService(GameRepository gameRepository, HighscoreRepository highscoreRepository) {
         this.gameRepository = gameRepository;
+        this.highscoreRepository = highscoreRepository;
     }
 
     public ResponseEntity selectTopScores(String gameName, Integer recordsAmount, String countryName) {
 
-        ArrayList<HighScore> highScores = gameRepository.findGameByName(gameName).getHighScores();
+        ArrayList<HighScore> highScores = highscoreRepository.findAllByGame_Name(gameName);
 
         return new ResponseEntity(new HighScoreListDTO(highScores), HttpStatus.OK);
     }
 
     public ResponseEntity insertNewScore(String gameName, HighScore scoreToInsert) {
 
-        Game game = gameRepository.findGameByName(gameName);
-        ArrayList<HighScore> highScores = getHighScoreList(game);
+        ArrayList<HighScore> highScores = getHighScoreList(gameName);
 
         boolean greaterThanSomeScore = highScores.stream().anyMatch(score -> score.getScore() < scoreToInsert.getScore());
 
-        if(greaterThanSomeScore || highScores.size() == 0){
+        if(greaterThanSomeScore || highScores.isEmpty()){
 
             highScores.add(scoreToInsert);
 
@@ -64,8 +65,8 @@ public class ScoreService {
         return null;
     }
 
-    private ArrayList<HighScore> getHighScoreList(Game game){
+    private ArrayList<HighScore> getHighScoreList(String gameName){
 
-        return Optional.ofNullable(game.getHighScores()).orElse(new ArrayList<>());
+        return Optional.ofNullable(highscoreRepository.findAllByGame_Name(gameName)).orElse(new ArrayList<>());
     }
 }
