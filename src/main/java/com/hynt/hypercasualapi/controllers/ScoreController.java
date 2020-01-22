@@ -22,10 +22,9 @@ public class ScoreController {
 
     @RequestMapping(value = "topScores", method = RequestMethod.GET)
     public ResponseEntity topScores(@RequestParam String gameName,
-                                    @RequestParam (required = false) Integer recordsAmount,
-                                    @RequestParam (required = false) String countryName){
+                                    @RequestParam (required = false) Integer recordsAmount){
 
-        return scoreService.selectTopScores(gameName, recordsAmount, countryName);
+        return scoreService.selectTopScores(gameName, recordsAmount);
     }
 
     @RequestMapping(value = "insertScore", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

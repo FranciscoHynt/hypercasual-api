@@ -30,9 +30,12 @@ public class ScoreService {
         this.highscoreRepository = highscoreRepository;
     }
 
-    public ResponseEntity selectTopScores(String gameName, Integer recordsAmount, String countryName) {
+    public ResponseEntity selectTopScores(String gameName, Integer recordsAmount) {
 
-        ArrayList<HighScore> highScores = highscoreRepository.findAllByGame_Name(gameName, PageRequest.of(0, recordsAmount));
+        Game game = gameRepository.findGameByName(gameName);
+        int recordsToSelect = Optional.ofNullable(recordsAmount).orElse(game.getMaxScoresRecords());
+
+        ArrayList<HighScore> highScores = getHighScoreList(gameName, recordsToSelect);
 
         return new ResponseEntity(new HighScoreListDTO(highScores), HttpStatus.OK);
     }
@@ -102,6 +105,6 @@ public class ScoreService {
 
     private ArrayList<HighScore> getHighScoreList(String gameName, int recordsAmount){
 
-        return Optional.ofNullable(highscoreRepository.findAllByGame_Name(gameName, PageRequest.of(0, recordsAmount))).orElse(new ArrayList<>());
+        return Optional.ofNullable(highscoreRepository.findAllByGame_NameOrderByScoreDesc(gameName, PageRequest.of(0, recordsAmount))).orElse(new ArrayList<>());
     }
 }

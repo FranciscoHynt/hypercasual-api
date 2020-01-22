@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public interface HighscoreRepository extends MongoRepository<HighScore, String> {
 
-    ArrayList<HighScore> findAllByGame_Name(String gameName, Pageable pageable);
+    ArrayList<HighScore> findAllByGame_NameOrderByScoreDesc(String gameName, Pageable pageable);
 
     HighScore save(HighScore highScore);
 
