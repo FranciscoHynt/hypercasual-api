@@ -12,6 +12,6 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class HighScoreListDTO {
 
-    private ArrayList<HighScore> highScores;
+    private ArrayList<HighScoreDTO> highScores;
 
 }
