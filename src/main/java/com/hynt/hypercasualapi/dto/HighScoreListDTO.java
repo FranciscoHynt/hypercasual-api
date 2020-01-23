@@ -1,6 +1,5 @@
 package com.hynt.hypercasualapi.dto;
 
-import com.hynt.hypercasualapi.collections.HighScore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

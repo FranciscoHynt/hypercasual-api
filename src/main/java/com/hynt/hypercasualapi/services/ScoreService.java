@@ -88,7 +88,9 @@ public class ScoreService {
 
     public ResponseEntity syncScores(String gameName, HighScoreListDTO highScoreList) {
 
-        return null;
+        highScoreList.getHighScores().forEach(highScoreDTO -> insertNewScore(gameName, highScoreDTO));
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private ArrayList<HighScore> getHighScoreList(String gameName, int recordsAmount){
