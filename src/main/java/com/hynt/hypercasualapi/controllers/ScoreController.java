@@ -34,10 +34,10 @@ public class ScoreController {
         return scoreService.insertNewScore(gameName, scoreToInsert);
     }
 
-    @RequestMapping(value = "syncScores", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "syncScores", method = RequestMethod.POST, consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity syncScores(@RequestParam String gameName,
-                                     @RequestBody HighScoreListDTO highScoreList){
+                                     @RequestBody HighScoreListDTO highScores){
 
-        return scoreService.syncScores(gameName, highScoreList);
+        return scoreService.syncScores(gameName, highScores);
     }
 }

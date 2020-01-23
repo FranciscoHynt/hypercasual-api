@@ -1,6 +1,5 @@
 package com.hynt.hypercasualapi.dto;
 
-import com.hynt.hypercasualapi.collections.Game;
 import lombok.Getter;
 
 @Getter
