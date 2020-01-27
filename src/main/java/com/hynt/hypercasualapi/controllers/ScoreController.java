@@ -40,4 +40,12 @@ public class ScoreController {
 
         return scoreService.syncScores(gameName, highScores);
     }
+
+    @RequestMapping(value = "updatePlayerName", method = RequestMethod.POST)
+    public ResponseEntity updatePlayerName(@RequestParam String gameName,
+                                           @RequestParam String oldPlayerName,
+                                           @RequestParam String newPlayerName){
+
+        return scoreService.updatePlayerName(gameName, oldPlayerName, newPlayerName);
+    }
 }

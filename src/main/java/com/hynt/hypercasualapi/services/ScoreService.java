@@ -93,6 +93,18 @@ public class ScoreService {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    public ResponseEntity updatePlayerName(String gameName, String oldPlayerName, String newPlayerName){
+
+        highscoreRepository.findAllByPlayerAndGame_Name(oldPlayerName, gameName).forEach(highScore -> {
+
+            highScore.setPlayer(newPlayerName);
+            highscoreRepository.save(highScore);
+
+        });
+
+        return new ResponseEntity(HttpStatus.OK);
+   }
+
     private ArrayList<HighScore> getHighScoreList(String gameName, int recordsAmount){
 
         return Optional.ofNullable(highscoreRepository.findAllByGame_NameOrderByScoreDesc(gameName, PageRequest.of(0, recordsAmount))).orElse(new ArrayList<>());
