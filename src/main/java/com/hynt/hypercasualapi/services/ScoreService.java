@@ -95,6 +95,9 @@ public class ScoreService {
 
     public ResponseEntity updatePlayerName(String gameName, String oldPlayerName, String newPlayerName){
 
+        if(Optional.ofNullable(highscoreRepository.getFirstByPlayerAndGame_Name(newPlayerName, gameName)).isPresent())
+            return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
+
         highscoreRepository.findAllByPlayerAndGame_Name(oldPlayerName, gameName).forEach(highScore -> {
 
             highScore.setPlayer(newPlayerName);
