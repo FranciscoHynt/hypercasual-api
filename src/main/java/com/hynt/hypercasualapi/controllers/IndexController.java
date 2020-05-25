@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
-    @RequestMapping(value = "/")
+    public static final String SLASH = "/";
+
+    @RequestMapping(value = SLASH)
     public ResponseEntity index(){
 
         return new ResponseEntity("A API está online e pronta para receber requisições!", HttpStatus.OK);

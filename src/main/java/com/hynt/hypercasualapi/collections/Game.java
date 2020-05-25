@@ -4,9 +4,10 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "games")
+@Document(collection = Game.GAMES_COLLECTION)
 @Data
 public class Game {
+    public static final String GAMES_COLLECTION = "games";
 
     @Id
     private String id;

@@ -17,6 +17,8 @@ import java.util.Optional;
 @Service
 public class GameDetailsService implements UserDetailsService {
 
+    private static final String GAME_NOT_FOUND = "Game not found.";
+    private static final String ADMIN = "ADMIN";
     private final GameRepository gameRepository;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -32,13 +34,13 @@ public class GameDetailsService implements UserDetailsService {
 
         if(Optional.ofNullable(game).isPresent()){
 
-            GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
+            GrantedAuthority authority = new SimpleGrantedAuthority(ADMIN);
 
             User user = new User(game.getName(),encoder.encode(game.getPassword()), Arrays.asList(authority));
 
             return user;
         }
 
-        throw new UsernameNotFoundException("Jogo não encontrado.");
+        throw new UsernameNotFoundException(GAME_NOT_FOUND);
     }
 }

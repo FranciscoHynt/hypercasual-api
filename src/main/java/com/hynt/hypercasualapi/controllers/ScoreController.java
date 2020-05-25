@@ -14,34 +14,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ScoreController {
 
+    private static final String TOP_SCORES = "topScores";
+    private static final String INSERT_SCORE = "insertScore";
+    private static final String SYNC_SCORES = "syncScores";
+    private static final String UPDATE_PLAYER_NAME = "updatePlayerName";
+
     private final ScoreService scoreService;
 
     public ScoreController(ScoreService scoreService) {
         this.scoreService = scoreService;
     }
 
-    @RequestMapping(value = "topScores", method = RequestMethod.GET)
+    @RequestMapping(value = TOP_SCORES, method = RequestMethod.GET)
     public ResponseEntity topScores(@RequestParam String gameName,
                                     @RequestParam (required = false) Integer recordsAmount){
 
         return scoreService.selectTopScores(gameName, recordsAmount);
     }
 
-    @RequestMapping(value = "insertScore", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = INSERT_SCORE, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity insertScore(@RequestParam String gameName,
                                       @RequestBody HighScoreDTO scoreToInsert){
 
         return scoreService.insertNewScore(gameName, scoreToInsert);
     }
 
-    @RequestMapping(value = "syncScores", method = RequestMethod.POST, consumes =  MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = SYNC_SCORES, method = RequestMethod.POST, consumes =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity syncScores(@RequestParam String gameName,
                                      @RequestBody HighScoreListDTO highScores){
 
         return scoreService.syncScores(gameName, highScores);
     }
 
-    @RequestMapping(value = "updatePlayerName", method = RequestMethod.POST)
+    @RequestMapping(value = UPDATE_PLAYER_NAME, method = RequestMethod.POST)
     public ResponseEntity updatePlayerName(@RequestParam String gameName,
                                            @RequestParam String oldPlayerName,
                                            @RequestParam String newPlayerName){

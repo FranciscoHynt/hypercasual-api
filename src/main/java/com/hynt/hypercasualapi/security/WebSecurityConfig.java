@@ -16,8 +16,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final
-    GameDetailsService gameDetailsService;
+    private static final String VALIDATE_AUTHENTICATION = "/validateAuthentication";
+    private static final String SLASH = "/";
+    private final GameDetailsService gameDetailsService;
 
     public WebSecurityConfig(GameDetailsService gameDetailsService) {
         this.gameDetailsService = gameDetailsService;
@@ -27,11 +28,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf().disable().authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST, "/validateAuthentication").permitAll()
+                .antMatchers(SLASH).permitAll()
+                .antMatchers(HttpMethod.POST, VALIDATE_AUTHENTICATION).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JWTLoginFilter("/validateAuthentication", authenticationManager()),
+                .addFilterBefore(new JWTLoginFilter(VALIDATE_AUTHENTICATION, authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

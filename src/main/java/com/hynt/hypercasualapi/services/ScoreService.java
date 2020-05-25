@@ -110,6 +110,8 @@ public class ScoreService {
 
     private ArrayList<HighScore> getHighScoreList(String gameName, int recordsAmount){
 
-        return Optional.ofNullable(highscoreRepository.findAllByGame_NameOrderByScoreDesc(gameName, PageRequest.of(0, recordsAmount))).orElse(new ArrayList<>());
+        return Optional
+                .ofNullable(highscoreRepository.findAllByGame_NameOrderByScoreDesc(gameName, PageRequest.of(0, recordsAmount)))
+                .orElse(new ArrayList<>());
     }
 }

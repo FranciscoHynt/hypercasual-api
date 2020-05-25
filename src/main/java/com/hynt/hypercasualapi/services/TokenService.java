@@ -42,9 +42,9 @@ public class TokenService {
 
             if (Optional.ofNullable(user).isPresent())
                 return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
-
         }
 
+        //Throw exception
         return null;
     }
 }
