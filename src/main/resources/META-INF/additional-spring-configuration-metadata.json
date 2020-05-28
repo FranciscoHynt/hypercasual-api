@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "util.profanityWordList",
+      "type": "java.lang.String",
+      "description": "Description for util.profanityWordList."
+  }
+] }

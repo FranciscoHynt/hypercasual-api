@@ -33,9 +33,8 @@ public class ScoreController {
     }
 
     @RequestMapping(value = INSERT_SCORE, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity insertScore(@RequestParam String gameName,
-                                      @RequestBody HighScoreDTO scoreToInsert){
-
+    public <T extends HighScoreDTO> ResponseEntity insertScore(@RequestParam String gameName,
+                                                               @RequestBody T scoreToInsert){
         return scoreService.insertNewScore(gameName, scoreToInsert);
     }
 

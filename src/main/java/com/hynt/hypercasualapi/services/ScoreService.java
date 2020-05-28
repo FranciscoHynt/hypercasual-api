@@ -54,7 +54,7 @@ public class ScoreService {
         return new ResponseEntity(new HighScoreListDTO(highScoresDTO), HttpStatus.OK);
     }
 
-    public ResponseEntity insertNewScore(String gameName, HighScoreDTO scoreToInsert){
+    public <T extends HighScoreDTO> ResponseEntity insertNewScore(String gameName, T scoreToInsert){
 
         boolean hasSpaceInRecords = Boolean.FALSE;
         boolean greaterThanSomeScore = Boolean.FALSE;
@@ -83,7 +83,6 @@ public class ScoreService {
         }
 
         return new ResponseEntity((HttpStatus.OK));
-
     }
 
     public ResponseEntity syncScores(String gameName, HighScoreListDTO highScoreList) {
